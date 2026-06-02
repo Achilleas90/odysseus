@@ -113,6 +113,27 @@ def test_ordered_lists_render_as_one_unwrapped_ol(node_available):
     assert "<p>After</p>" in html
 
 
+def test_unordered_lists_render_as_one_unwrapped_ul(node_available):
+    html = _run_markdown_case(
+        "Before\n\n"
+        "- **Check against the home page** — that's the visual reference for how things should feel.\n"
+        "- **Open DevTools** and inspect the element — check fonts, colors, and spacing against this guide.\n"
+        "- **Flag it** — note the page, the section, what's wrong, and what CSS rule you suspect.\n\n"
+        "After"
+    )
+
+    assert html.count("<ul>") == 1
+    assert html.count("</ul>") == 1
+    assert html.count("<li>") == 3
+    assert "<ol>" not in html
+    assert "<oli>" not in html
+    assert "<uli>" not in html
+    assert "<p><ul>" not in html
+    assert "<p><li>" not in html
+    assert "<p>Before</p>" in html
+    assert "<p>After</p>" in html
+
+
 def test_table_separator_row_not_rendered_as_data(node_available):
     html = _run_markdown_case("| A | B |\n|---|---|\n| 1 | 2 |")
 
